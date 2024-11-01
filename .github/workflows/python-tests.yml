@@ -64,6 +64,6 @@ jobs:
             -Dsonar.tests=.
             -Dsonar.inclusions=main.py,game.py
             -Dsonar.test.inclusions=test_game.py
-            -Dsonar.python.coverage.reportPaths=lcov.info
+            -Dsonar.python.coverage.reportPaths=./lcov.info
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
