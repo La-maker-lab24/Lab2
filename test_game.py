@@ -1,6 +1,5 @@
 import unittest
 from game import Game, GameStatistics
-from settings import Settings, AdvancedSettings
 
 class TestGame(unittest.TestCase):
 
@@ -9,7 +8,6 @@ class TestGame(unittest.TestCase):
         self.statistics = GameStatistics()
 
     def test_play_round_user_wins(self):
-        # Принудительно задаем выбор компьютера для теста
         self.game._get_computer_choice = lambda: 'scissors'
         result, computer_choice = self.game.play_round('rock')
         self.assertEqual(result, 'user')
