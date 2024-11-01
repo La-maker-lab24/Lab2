@@ -31,7 +31,7 @@ def main():
         print("Компьютер выиграл игру!")
         stats.record_game('computer')
     print(
-        f"Играло игр: {stats.games_played}, Выигрыши пользователя: {stats.user_wins}, Выигрыши компьютера: {stats.computer_wins}")
+        f"Сыграно партий {stats.games_played}, Выигрыши пользователя: {stats.user_wins}, Выигрыши компьютера: {stats.computer_wins}")
 
 
 if __name__ == "__main__":
