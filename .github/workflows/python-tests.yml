@@ -43,7 +43,11 @@ jobs:
           coverage run --source=game -m unittest discover
           coverage report
           coverage xml -o coverage.xml
+          ls -l *.gcda
+          ls -l *.gcno
           lcov --capture --directory . --output-file lcov.info
+          cat lcov.info || echo "lcov.info не создан"
+
 
       - name: Check for lcov.info
         run: |
