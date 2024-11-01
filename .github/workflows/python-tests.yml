@@ -43,7 +43,7 @@ jobs:
           coverage xml -o coverage.xml
 
       - name: Upload coverage report
-        uses: actions/upload-artifact@v3  # Обновленная версия
+        uses: actions/upload-artifact@v3
         with:
           name: coverage-report
           path: coverage.xml
@@ -58,6 +58,6 @@ jobs:
             -Dsonar.tests=.
             -Dsonar.inclusions=main.py,game.py
             -Dsonar.test.inclusions=test_game.py
-            -Dsonar.python.coverage.reportPaths=./coverage.xml  # Указываем путь к coverage.xml
+            -Dsonar.python.coverage.reportPaths=./coverage.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
