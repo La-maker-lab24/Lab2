@@ -48,7 +48,7 @@ jobs:
           args: >
             -Dsonar.projectKey=La-maker-lab24_Lab2
             -Dsonar.organization=la-maker-lab24
-            -Dsonar.sources=./main.py
+            -Dsonar.sources=./game.py
             -Dsonar.tests=./test_game.py
             -Dsonar.python.coverage.reportPaths=lcov.info
         env:
