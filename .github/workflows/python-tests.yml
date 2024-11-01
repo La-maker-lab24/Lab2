@@ -39,7 +39,7 @@ jobs:
 
       - name: Run tests
         run: |
-          coverage run --source=test_game.py -m unittest discover
+          coverage run --source=game -m unittest discover
           coverage report
           coverage xml -o coverage.xml
           lcov --capture --directory . --output-file lcov.info
