@@ -1,5 +1,5 @@
 ![example workflow](https://github.com/La-maker-lab24/Lab2/actions/workflows/python-tests.yml/badge.svg)
 [![Coverage Status](https://coveralls.io/repos/github/La-maker-lab24/Lab2/badge.svg?branch=main)](https://coveralls.io/github/La-maker-lab24/Lab2?branch=main)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=la-maker-lab24_lab2&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=la-maker-lab24_lab2)
-[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=la-maker-lab24_lab2&metric=bugs)](https://sonarcloud.io/summary/new_code?id=la-maker-lab24_lab2)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=la-maker-lab24_lab2&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=la-maker-lab24_lab2)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=La-maker-lab24_Lab2&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=La-maker-lab24_Lab2)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=La-maker-lab24_Lab2&metric=bugs)](https://sonarcloud.io/summary/new_code?id=La-maker-lab24_Lab2)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=La-maker-lab24_Lab2&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=La-maker-lab24_Lab2)
