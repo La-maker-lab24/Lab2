@@ -43,20 +43,28 @@ jobs:
           coverage run --source=game -m unittest discover
           coverage report
           coverage xml -o coverage.xml
-          ls -l *.gcda
-          ls -l *.gcno
-          lcov --capture --directory . --output-file lcov.info
-          cat lcov.info || echo "lcov.info не создан"
+          #lcov --capture --directory . --output-file lcov.info
 
-
-      - name: Check for lcov.info
+      - name: Run tests with coverage
         run: |
-          if [ -f lcov.info ]; then
-            echo "lcov.info exists."
-          else
-            echo "lcov.info does not exist."
-            exit 1
-          fi
+          coverage run -m unittest discover
+          coverage report
+          coverage html
+          coverage xml -o coverage.xml
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v2
+        with:
+          name: coverage-report
+          path: coverage.xml
+
+      #- name: Check for lcov.info
+      #  run: |
+      #    if [ -f lcov.info ]; then
+      #      echo "lcov.info exists."
+      #    else
+      #      echo "lcov.info does not exist."
+      #      exit 1
 
       - name: Run SonarCloud analysis
         uses: sonarsource/sonarcloud-github-action@master
