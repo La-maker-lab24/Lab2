@@ -29,11 +29,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install coverage
 
-      - name: Install lcov
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lcov
-
       - name: Install Java
         run: |
           sudo apt-get update
@@ -46,22 +41,12 @@ jobs:
           coverage report
           coverage html
           coverage xml -o coverage.xml
-          lcov --capture --directory . --output-file lcov.info || echo "lcov generation failed"
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v3  # Обновленная версия
         with:
           name: coverage-report
           path: coverage.xml
-
-      - name: Check for lcov.info
-        run: |
-          if [ -f lcov.info ]; then
-            echo "lcov.info exists."
-          else
-            echo "lcov.info does not exist."
-            exit 1
-          fi
 
       - name: Run SonarCloud analysis
         uses: sonarsource/sonarcloud-github-action@master
@@ -73,6 +58,6 @@ jobs:
             -Dsonar.tests=.
             -Dsonar.inclusions=main.py,game.py
             -Dsonar.test.inclusions=test_game.py
-            -Dsonar.python.coverage.reportPaths=./lcov.info
+            -Dsonar.python.coverage.reportPaths=./coverage.xml  # Указываем путь к coverage.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
