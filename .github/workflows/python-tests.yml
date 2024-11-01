@@ -29,11 +29,11 @@ jobs:
       - name: Install lcov
         run: sudo apt-get install lcov
 
-      # Установка Java 11
+      # Установка Java 17
       - name: Install Java
         run: |
           sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk
+          sudo apt-get install -y openjdk-17-jdk
           java -version  # Проверка установленной версии Java
 
       - name: Run tests
@@ -42,17 +42,12 @@ jobs:
           coverage xml -o coverage.xml
           lcov --capture --directory . --output-file lcov.info
 
-      - name: Upload coverage to SonarCloud
-        uses: sonarsource/sonarcloud-github-action@v1
+      - name: Run SonarCloud analysis
+        uses: sonarsource/sonarcloud-github-action@v1.5.0 # Используйте последнюю стабильную версию
         with:
           args: >
             -Dsonar.projectKey=La-maker-lab24_Lab2
             -Dsonar.organization=la-maker-lab24
             -Dsonar.sources=.
             -Dsonar.tests=.
-            -Dsonar.python.coverage.reportPaths=lcov.info
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
-
-      - name: Run SonarCloud analysis
-        run: sonar-scanner
+            -Dsonar.python.coverage.report
