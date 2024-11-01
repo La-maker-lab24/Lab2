@@ -23,31 +23,34 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install -r requirements.txt
+          python -m pip install --upgrade pip
+          pip install coverage lcov
+          
+      - name: Install lcov
+        run: sudo apt-get install lcov
 
-      - name: Read SonarCloud properties
-        id: sonar_properties
+      # Установка Java 17
+      - name: Install Java
         run: |
-          echo "SONAR_PROJECT_KEY=$(grep sonar.projectKey sonar-project.properties | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "SONAR_ORGANIZATION=$(grep sonar.organization sonar-project.properties | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "SONAR_SOURCES=$(grep sonar.sources sonar-project.properties | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "SONAR_TESTS=$(grep sonar.tests sonar-project.properties | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "SONAR_EXCLUSIONS=$(grep sonar.exclusions sonar-project.properties | cut -d '=' -f2)" >> $GITHUB_ENV
-          echo "SONAR_COVERAGE_REPORT=$(grep sonar.python.coverage.reportPaths sonar-project.properties | cut -d '=' -f2)" >> $GITHUB_ENV
+          sudo apt-get update
+          sudo apt-get install -y openjdk-17-jdk
+          java -version  # Проверка установленной версии Java
 
       - name: Run tests
         run: |
-          pytest
+          coverage run -m unittest discover
+          coverage xml -o coverage.xml
+          lcov --capture --directory . --output-file lcov.info
 
       - name: Run SonarCloud analysis
-        uses: sonarsource/sonarcloud-github-action@master
+        uses: sonarsource/sonarcloud-github-action@master # Используем последнюю стабильную версию
         with:
           args: >
-            -Dsonar.projectKey=${{ env.SONAR_PROJECT_KEY }}
-            -Dsonar.organization=${{ env.SONAR_ORGANIZATION }}
-            -Dsonar.sources=${{ env.SONAR_SOURCES }}
-            -Dsonar.tests=${{ env.SONAR_TESTS }}
-            -Dsonar.exclusions=${{ env.SONAR_EXCLUSIONS }}
-            -Dsonar.python.coverage.reportPaths=${{ env.SONAR_COVERAGE_REPORT }}
+            -Dsonar.projectKey=La-maker-lab24_Lab2
+            -Dsonar.organization=la-maker-lab24
+            -Dsonar.sources=.
+            -Dsonar.tests=test_game.py
+            -Dsonar.python.coverage.reportPaths=lcov.info
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+
