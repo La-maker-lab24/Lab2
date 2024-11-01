@@ -25,7 +25,7 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install coverage lcov
-          
+
       - name: Install lcov
         run: sudo apt-get install lcov
 
@@ -43,14 +43,15 @@ jobs:
           lcov --capture --directory . --output-file lcov.info
 
       - name: Run SonarCloud analysis
-        uses: sonarsource/sonarcloud-github-action@master # Используем последнюю стабильную версию
+        uses: sonarsource/sonarcloud-github-action@master
         with:
           args: >
             -Dsonar.projectKey=La-maker-lab24_Lab2
             -Dsonar.organization=la-maker-lab24
-            -Dsonar.sources= ./game.py
-            -Dsonar.tests=./test_game.py
+            -Dsonar.sources=.
+            -Dsonar.tests=.
+            -Dsonar.inclusions=main.py,game.py
+            -Dsonar.test.inclusions=test_game.py
             -Dsonar.python.coverage.reportPaths=lcov.info
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
-
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
