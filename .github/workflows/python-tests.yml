@@ -31,19 +31,17 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lcov
 
-      # Установка Java 17 (если необходимо)
       - name: Install Java
         run: |
           sudo apt-get update
           sudo apt-get install -y openjdk-17-jdk
-          java -version  # Проверка установленной версии Java
+          java -version
 
       - name: Run tests
         run: |
-          coverage run --source=your_module_name -m unittest discover
-          coverage report  # Вывод отчета о покрытии в консоль
-          coverage xml -o coverage.xml  # Создание XML отчета
-          coverage html  # Создание HTML отчета (опционально)
+          coverage run --source=test_game.py -m unittest discover
+          coverage report
+          coverage xml -o coverage.xml
           lcov --capture --directory . --output-file lcov.info
 
       - name: Check for lcov.info
