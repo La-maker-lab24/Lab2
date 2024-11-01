@@ -43,11 +43,14 @@ jobs:
           lcov --capture --directory . --output-file lcov.info
 
       - name: Run SonarCloud analysis
-        uses: sonarsource/sonarcloud-github-action@v1.5.0 # Используйте последнюю стабильную версию
+        uses: sonarsource/sonarcloud-github-action@master # Используем последнюю стабильную версию
         with:
           args: >
             -Dsonar.projectKey=La-maker-lab24_Lab2
             -Dsonar.organization=la-maker-lab24
             -Dsonar.sources=.
             -Dsonar.tests=.
-            -Dsonar.python.coverage.report
+            -Dsonar.python.coverage.reportPaths=lcov.info
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} 
+
