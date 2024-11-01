@@ -31,7 +31,7 @@ jobs:
       run: |
         coverage run -m unittest discover
         coverage report
-        coverage xml  # Генерация отчета в формате XML для SonarCloud
+        coverage xml
 
     - name: Upload coverage to Coveralls
       run: coveralls
@@ -41,18 +41,18 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: ubuntu-latest
-    needs: test  # Убедитесь, что этот шаг выполняется после тестов
+    needs: test
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         with:
           args: >
-            -Dsonar.projectKey=${{ secrets.SONAR_PROJECT_KEY }}  # Убедитесь, что ключ проекта указан
-            -Dsonar.organization=${{ secrets.SONAR_ORGANIZATION }}  # Убедитесь, что организация указана
-            -Dsonar.sources=.  # Укажите директорию с исходным кодом
+            -Dsonar.projectKey=La-maker-lab24_Lab2
+            -Dsonar.organization=la-maker-lab24
+            -Dsonar.sources=https://github.com/La-maker-lab24/Lab2
             -Dsonar.python.coverage.reportPaths=coverage.xml  # Укажите путь к отчету о покрытии
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
