@@ -1,10 +1,9 @@
 from game import Game, GameStatistics
 def main():
-    fin_score = 8
-    game = Game(finish_score=fin_score)
+    game = Game()
     stats = GameStatistics()
     print("Добро пожаловать в игру 'Камень, Ножницы, Бумага'!")
-    print(f"Первый игрок, который наберет {fin_score} очков, выигрывает!")
+    print(f"Первый игрок, который наберет 8 очков, выигрывает!")
 
     while not game.is_game_over():
         user_choice = input("Введите ваш выбор (rock, paper, scissors): ").lower()
@@ -24,7 +23,7 @@ def main():
 
         print(f"Счет: Вы {game.user_score} - Компьютер {game.computer_score}")
 
-    if game.user_score >= fin_score:
+    if game.user_score >= 8:
         print("Поздравляем! Вы выиграли игру!")
         stats.record_game('user')
     else:
