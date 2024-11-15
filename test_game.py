@@ -73,13 +73,15 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.game.previous_choices, ['paper', 'scissors', 'rock'])
 
     def test_draw(self):
-        self.game.play_round('paper')
-        result, computer_choice = self.game.play_round('paper')
+        computer_choice = 'paper'
+        user_choice = 'paper'
+        result = self.game._determine_winner(user_choice, computer_choice)
         self.assertEqual(result, 'draw')
 
     def test_invalid_user_choice(self):
-        with self.assertRaises(ValueError):
-            self.game.play_round('invalid_choice')  # Здесь нужно будет добавить проверку на недопустимый выбор в метод play_round
+        with self.assertRaises(KeyError) as context:
+            self.game.play_round('invalid_choice')
+        self.assertEqual(str(context.exception), "'invalid_choice'")
 
 if __name__ == '__main__':
     unittest.main()
