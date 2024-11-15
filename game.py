@@ -15,12 +15,12 @@ class Game:
         self.previous_choices.append(user_choice)
         if len(self.previous_choices) > 3:
             self.previous_choices.pop(0)
-        computer_choice = self._get_computer_choice()
+        computer_choice = self.get_computer_choice()
         result = self._determine_winner(user_choice, computer_choice)
         self._update_scores(result)
         return result, computer_choice
 
-    def _get_computer_choice(self):
+    def get_computer_choice(self):
         total_choices = sum(self.user_choices_history.values())
         if total_choices == 0:
             return random.choice(self.choices)
