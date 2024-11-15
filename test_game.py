@@ -12,6 +12,13 @@ class TestGame(unittest.TestCase):
         self.assertIn(computer_choice, ['rock', 'paper', 'scissors'])
         self.assertIn(result, ['user', 'computer', 'draw'])
 
+    def test_play_round_choices(self):
+        choices = ['rock', 'paper', 'scissors']
+        for choice in choices:
+            result, computer_choice = self.game.play_round(choice)
+            self.assertIn(computer_choice, choices)
+            self.assertIn(result, ['user', 'computer', 'draw'])
+
     def test_determine_winner(self):
         self.assertEqual(self.game._determine_winner('rock', 'scissors'), 'user')
         self.assertEqual(self.game._determine_winner('paper', 'rock'), 'user')
@@ -30,6 +37,10 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.game.user_score, 1)
         self.assertEqual(self.game.computer_score, 1)
 
+        self.game._update_scores('draw')
+        self.assertEqual(self.game.user_score, 1)
+        self.assertEqual(self.game.computer_score, 1)
+
     def test_is_game_over(self):
         self.game.user_score = 8
         self.assertTrue(self.game.is_game_over())
@@ -39,6 +50,14 @@ class TestGame(unittest.TestCase):
         self.game.user_score = 7
         self.game.computer_score = 7
         self.assertFalse(self.game.is_game_over())
+
+    def test_game_over_user_wins(self):
+        self.game.user_score = 10
+        self.assertTrue(self.game.is_game_over())
+
+    def test_game_over_computer_wins(self):
+        self.game.computer_score = 10
+        self.assertTrue(self.game.is_game_over())
 
     def test_reset_game(self):
         self.game.user_score = 5
@@ -53,6 +72,15 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.stats.games_played, 2)
         self.assertEqual(self.stats.user_wins, 1)
         self.assertEqual(self.stats.computer_wins, 1)
+
+    def test_record_game_statistics(self):
+        self.stats.record_game('user')
+        self.assertEqual(self.stats.user_wins, 1)
+        self.assertEqual(self.stats.games_played, 1)
+
+        self.stats.record_game('computer')
+        self.assertEqual(self.stats.computer_wins, 1)
+        self.assertEqual(self.stats.games_played, 2)
 
     def test_reset_statistics(self):
         self.stats.record_game('user')
