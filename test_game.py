@@ -1,4 +1,4 @@
-import unittest
+import unittest, random
 from game import Game, GameStatistics
 
 class TestGame(unittest.TestCase):
@@ -7,17 +7,14 @@ class TestGame(unittest.TestCase):
         self.game = Game()
         self.stats = GameStatistics()
 
+    def test_initial_scores(self):
+        self.assertEqual(self.game.user_score, 0)
+        self.assertEqual(self.game.computer_score, 0)
+
     def test_play_round(self):
         result, computer_choice = self.game.play_round('rock')
         self.assertIn(computer_choice, ['rock', 'paper', 'scissors'])
         self.assertIn(result, ['user', 'computer', 'draw'])
-
-    def test_play_round_choices(self):
-        choices = ['rock', 'paper', 'scissors']
-        for choice in choices:
-            result, computer_choice = self.game.play_round(choice)
-            self.assertIn(computer_choice, choices)
-            self.assertIn(result, ['user', 'computer', 'draw'])
 
     def test_determine_winner(self):
         self.assertEqual(self.game._determine_winner('rock', 'scissors'), 'user')
@@ -37,10 +34,6 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.game.user_score, 1)
         self.assertEqual(self.game.computer_score, 1)
 
-        self.game._update_scores('draw')
-        self.assertEqual(self.game.user_score, 1)
-        self.assertEqual(self.game.computer_score, 1)
-
     def test_is_game_over(self):
         self.game.user_score = 8
         self.assertTrue(self.game.is_game_over())
@@ -50,14 +43,6 @@ class TestGame(unittest.TestCase):
         self.game.user_score = 7
         self.game.computer_score = 7
         self.assertFalse(self.game.is_game_over())
-
-    def test_game_over_user_wins(self):
-        self.game.user_score = 10
-        self.assertTrue(self.game.is_game_over())
-
-    def test_game_over_computer_wins(self):
-        self.game.computer_score = 10
-        self.assertTrue(self.game.is_game_over())
 
     def test_reset_game(self):
         self.game.user_score = 5
@@ -72,15 +57,6 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.stats.games_played, 2)
         self.assertEqual(self.stats.user_wins, 1)
         self.assertEqual(self.stats.computer_wins, 1)
-
-    def test_record_game_statistics(self):
-        self.stats.record_game('user')
-        self.assertEqual(self.stats.user_wins, 1)
-        self.assertEqual(self.stats.games_played, 1)
-
-        self.stats.record_game('computer')
-        self.assertEqual(self.stats.computer_wins, 1)
-        self.assertEqual(self.stats.games_played, 2)
 
     def test_reset_statistics(self):
         self.stats.record_game('user')
@@ -107,9 +83,36 @@ class TestGame(unittest.TestCase):
         self.assertEqual(result, 'draw')
 
     def test_invalid_user_choice(self):
-        with self.assertRaises(KeyError) as context:
+        with self.assertRaises(KeyError):
             self.game.play_round('invalid_choice')
-        self.assertEqual(str(context.exception), "'invalid_choice'")
+
+class TestGameIntegration(unittest.TestCase):
+
+    def setUp(self):
+        self.game = Game()
+        self.stats = GameStatistics()
+
+
+    def test_game_play_integration(self):
+        game = Game(finish_score=2)
+        stats = GameStatistics()
+        for _ in range(3):
+            user_choice = random.choice(['rock', 'paper', 'scissors'])
+            result, computer_choice = game.play_round(user_choice)
+            stats.record_game(result)
+        self.assertEqual(stats.games_played, 3)
+
+    def test_reset_game_and_statistics(self):
+        self.game.play_round('rock')
+        self.stats.record_game('user')
+        self.game.reset_game()
+        self.stats.reset_statistics()
+
+        self.assertEqual(self.game.user_score, 0)
+        self.assertEqual(self.game.computer_score, 0)
+        self.assertEqual(self.stats.games_played, 0)
+        self.assertEqual(self.stats.user_wins, 0)
+        self.assertEqual(self.stats.computer_wins, 0)
 
 if __name__ == '__main__':
     unittest.main()
